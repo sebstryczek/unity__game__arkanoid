@@ -24,7 +24,10 @@ public class PaddleControl : MonoBehaviour
         float viewportHeight = Camera.main.orthographicSize * 2;
         float viewportWidth = viewportHeight * screenRatio;
         float halfViewportWidth = viewportWidth / 2;
-        float halfPaddleWidth = this.selfTransform.localScale.x / 2;
+
+        BoxCollider2D boxCollider2D = this.GetComponent<BoxCollider2D>();
+        float halfPaddleWidth = boxCollider2D.bounds.extents.x;
+
         return halfViewportWidth - halfPaddleWidth;
     }
 }
