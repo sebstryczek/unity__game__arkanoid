@@ -2,7 +2,7 @@
 
 public class BallMovement : MonoBehaviour
 {
-    private float speed = 5.0f;
+    [SerializeField] private float speed = 5.0f;
     private new Rigidbody2D rigidbody2D;
 
     private void Start()
