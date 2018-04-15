@@ -15,7 +15,7 @@ public class PaddleControl : MonoBehaviour
     {
         Vector2 worldMousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         float posX = Mathf.Clamp(worldMousePosition.x, -this.extremePosition, this.extremePosition);
-        this.transform.position = new Vector2(posX, this.transform.position.y);
+        this.selfTransform.position = new Vector2(posX, this.selfTransform.position.y);
     }
 
     private float GetExtremePosition()
