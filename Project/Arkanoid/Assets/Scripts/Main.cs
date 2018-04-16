@@ -13,6 +13,11 @@ public class Main : MonoBehaviour
 
     private void Start()
     {
+        if (StateManager.Instance.CurrentState == null)
+        {
+            StateManager.Instance.CreateEmptyState();
+        }
+
         if (StateManager.Instance.CurrentState.fields == null)
         {
             int[][] fields = this.levelManagement.GetRandomFieldsSet();

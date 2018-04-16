@@ -72,23 +72,20 @@ public class LevelManagement : MonoBehaviour
 
         for (int i = 0; i < this.areaRows; i++)
         {
-            int columnsCount = state.fields[i].Length;
             int[] rowItems = System.Array.FindAll(state.fields[i], x => x > 0);
-            Debug.Log(rowItems.Length);
-            brickOffsetX = (rowItems.Length * (brickWidth + this.brickSpace)+  this.brickSpace) / 2;
-            //1 0.5
+            brickOffsetX = (brickWidth + this.brickSpace) * (rowItems.Length - 1) / 2;
+            
             for (int j = 0; j < rowItems.Length; j++)
             {
                 BrickType brickType = this.brickTypes.Find(x => x.Id == rowItems[j]);
                 Transform brickTransform = Instantiate(this.prefabBrick).transform;
                 Brick brick = brickTransform.GetComponent<Brick>();
                 brick.SetType(brickType);
-
-
-                    float posX = (brickWidth + this.brickSpace) * j - brickOffsetX;
-                    float posY = brickOffsetY - (this.brickHeight + this.brickSpace) * i;
-                    brickTransform.position = new Vector3(posX, posY, 0);
-                    brickTransform.localScale = new Vector3(brickWidth, this.brickHeight, 0);
+                
+                float posX = (brickWidth + this.brickSpace) * j - brickOffsetX;
+                float posY = brickOffsetY - (this.brickHeight + this.brickSpace) * i;
+                brickTransform.position = new Vector3(posX, posY, 0);
+                brickTransform.localScale = new Vector3(brickWidth, this.brickHeight, 0);
             }
         }
     }
