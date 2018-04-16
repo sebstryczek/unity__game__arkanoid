@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311918, g: 0.3807398, b: 0.35872716, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311992, g: 0.38074034, b: 0.35872713, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -681,6 +681,7 @@ GameObject:
   - component: {fileID: 1981971437}
   - component: {fileID: 1981971436}
   - component: {fileID: 1981971439}
+  - component: {fileID: 1981971438}
   m_Layer: 0
   m_Name: _Scripts
   m_TagString: Untagged
@@ -712,6 +713,24 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1981971438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1981971435}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e67e8b9c1d55b354b9c5fb9140ea75b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  brickTypes:
+  - {fileID: 11400000, guid: c17dac0ce7b6b38458c5fd35217c2dcb, type: 2}
+  - {fileID: 11400000, guid: 360321584ab2c124cbff530f5ddc4e50, type: 2}
+  - {fileID: 11400000, guid: 44fb2a15bbb84a3439634bb8e13eb65f, type: 2}
+  - {fileID: 11400000, guid: 90e0665a8a3f4d246ae8245851b80564, type: 2}
+  prefabBrick: {fileID: 1090300948120320, guid: f3cead15e7151614991d8793ba359bcb,
+    type: 2}
 --- !u!114 &1981971439
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -720,15 +739,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1981971435}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 308eecd969ae22b4c965ddefd8379427, type: 3}
+  m_Script: {fileID: 11500000, guid: a39ea456e4adab248b323b63eccd8cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  brickTypes:
-  - {fileID: 11400000, guid: d9c65a03bce78e942bcdd1a5ff9fe127, type: 2}
-  - {fileID: 11400000, guid: d2168ba0d33eff549b07ca35c40de912, type: 2}
-  - {fileID: 11400000, guid: 4052ad9a9ac1b8d4da34225cd6fbdd7b, type: 2}
-  - {fileID: 11400000, guid: de4db528bff94654f917da91dee89fae, type: 2}
-  prefabBrick: {fileID: 1090300948120320, guid: f3cead15e7151614991d8793ba359bcb,
-    type: 2}
   prefabBorder: {fileID: 1234758046167822, guid: feb9e636b18916b4ab267db439260cf9,
     type: 2}
+  size: 0.25
