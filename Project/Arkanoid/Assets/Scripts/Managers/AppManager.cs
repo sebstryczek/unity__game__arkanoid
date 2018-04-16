@@ -3,25 +3,35 @@ using UnityEngine.SceneManagement;
 
 public class AppManager : Singleton<AppManager>
 {
-    public void NewGame()
+    public void GoToMenu()
+    {
+        SceneManager.LoadScene("Menu");
+    }
+
+    public void GoToLeaderboard()
+    {
+        SceneManager.LoadScene("Leaderboard");
+    }
+
+    public void GoToNewGame()
     {
         StateManager.Instance.CreateEmptyState();
         SceneManager.LoadScene("Game");
     }
 
-    public void ContinueGame()
+    public void GoToSavedGame()
     {
         StateManager.Instance.LoadState();
         SceneManager.LoadScene("Game");
     }
 
-    public void Leaderboard()
+    public void PauseGame()
     {
-        SceneManager.LoadScene("Leaderboard");
+        Time.timeScale = 0;
     }
-
-    public void Menu()
+    
+    public void ContinueGame()
     {
-        SceneManager.LoadScene("Menu");
+        Time.timeScale = 1;
     }
 }
