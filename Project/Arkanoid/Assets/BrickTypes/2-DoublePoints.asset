@@ -11,5 +11,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb55a99837782594ba08618ae9bad0cb, type: 3}
   m_Name: 2-DoublePoints
   m_EditorClassIdentifier: 
-  id: 1
+  id: 2
   tint: {r: 0.6137929, g: 0, b: 1, a: 1}

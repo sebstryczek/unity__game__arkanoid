@@ -4,28 +4,22 @@ using UnityEngine;
 
 public class Main : MonoBehaviour
 {
-    private SaveLoadSystem saveLoadSystem;
     private LevelManagement levelManagement;
-    private GameState state;
     
     private void Awake()
     {
-        this.saveLoadSystem = GetComponent<SaveLoadSystem>();
         this.levelManagement = GetComponent<LevelManagement>();
     }
 
     private void Start()
     {
-        if (this.saveLoadSystem.HasSavedState)
+        if (StateManager.Instance.CurrentState.fields == null)
         {
-            this.state = this.saveLoadSystem.Load();
-        }
-        else
-        {
-            this.state = new GameState();
-            this.state.fields = this.levelManagement.GetRandomFieldsSet();
+            int[][] fields = this.levelManagement.GetRandomFieldsSet();
+            StateManager.Instance.CurrentState.fields = fields;
+            StateManager.Instance.SaveState();
         }
 
-        this.levelManagement.CreateBricks(this.state);
+        this.levelManagement.CreateBricks(StateManager.Instance.CurrentState);
     }
 }

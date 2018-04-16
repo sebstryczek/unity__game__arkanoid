@@ -11,5 +11,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb55a99837782594ba08618ae9bad0cb, type: 3}
   m_Name: 3-SlowMotion
   m_EditorClassIdentifier: 
-  id: 2
+  id: 3
   tint: {r: 0.034482718, g: 1, b: 0, a: 1}
