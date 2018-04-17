@@ -34,7 +34,12 @@ public class LevelBricks : MonoBehaviour
 
     private BrickType GetRandomBrickType()
     {
-        int rand = Random.Range(0, this.brickTypes.Count);
+        int rand = 0;
+        bool canBeSpecial = Random.Range(0, 3) == 0 ? true : false;
+        if (canBeSpecial)
+        {
+            rand = Random.Range(0, this.brickTypes.Count);
+        }
         return this.brickTypes[rand];
     }
 
