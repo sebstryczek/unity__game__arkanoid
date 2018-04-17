@@ -15,15 +15,15 @@ public class LevelBricks : MonoBehaviour
         return this.brickTypes[rand];
     }
 
-    public void CreateBricks(State state, Area area)
+    public void CreateBricks(GameState gameState, Area area, Brick.OnBrickDestroy onBrickDestroy)
     {
         float brickWidth = (area.Width - this.brickSpace) / area.Columns - this.brickSpace;
         float brickOffsetY = area.Height / 2 - this.brickSpace - this.brickHeight / 2;
         
-        int [][] rows = state.fields;
+        int [][] rows = gameState.fields;
         for (int i = 0; i < rows.Length; i++)
         {
-            int[] rowColumns = state.fields[i];
+            int[] rowColumns = gameState.fields[i];
             float brickOffsetX = (brickWidth + this.brickSpace) * (rowColumns.Length - 1) / 2;
             for (int j = 0; j < rowColumns.Length; j++)
             {
@@ -31,6 +31,8 @@ public class LevelBricks : MonoBehaviour
                 Transform brickTransform = Instantiate(this.prefabBrick).transform;
                 Brick brick = brickTransform.GetComponent<Brick>();
                 brick.SetType(brickType);
+                brick.SetCoords(i, j);
+                brick.onBrickDestroy += onBrickDestroy;
                 
                 float posX = (brickWidth + this.brickSpace) * j - brickOffsetX;
                 float posY = brickOffsetY - (this.brickHeight + this.brickSpace) * i;

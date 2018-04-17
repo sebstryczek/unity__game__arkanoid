@@ -13,3 +13,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 3
   tint: {r: 1, g: 0, b: 0, a: 1}
+  points: 0
+  timeFactor: 1
+  timeFactorDuration: 0
+  bonusLives: 1

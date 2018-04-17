@@ -2,7 +2,7 @@
 
 namespace Utils
 {
-    class HelpersRandom
+    static class HelpersRandom
     {
         private static Random random = new Random();
 

@@ -3,12 +3,36 @@
 public class BallMovement : MonoBehaviour
 {
     [SerializeField] private float speed = 5.0f;
-    private new Rigidbody2D rigidbody2D;
+    private float speedFactor = 1.0f;
 
-    private void Start()
+    private new Rigidbody2D rigidbody2D;
+    private Transform selfTransform;
+
+    private void Awake()
     {
         this.rigidbody2D = GetComponent<Rigidbody2D>();
-        this.rigidbody2D.velocity = Vector2.up * speed;
+        this.selfTransform = this.transform;
+    }
+
+    private void Update()
+    {
+        GameStateManager.Instance.SetBallPosition(this.selfTransform.position);
+    }
+
+    public void SetSpeedFactor(float speedFactor)
+    {
+        this.speedFactor = speedFactor;
+        this.rigidbody2D.velocity = this.rigidbody2D.velocity.normalized * this.speed * this.speedFactor;
+    }
+    
+    public void Stop()
+    {
+        this.rigidbody2D.velocity = Vector2.zero;
+    }
+
+    public void Push()
+    {
+        this.rigidbody2D.velocity = Vector2.up * this.speed * this.speedFactor;
     }
 
     private void OnCollisionEnter2D(Collision2D other)
