@@ -77,10 +77,10 @@ public class Level : MonoBehaviour
     private void CreateNextLevel()
     {
         int[][] fields = this.levelBricks.GetRandomFieldsSet();
+        GameStateManager.Instance.SetLevel(GameStateManager.Instance.Level + 1);
         GameStateManager.Instance.SetFields(fields);
         GameStateManager.Instance.SetSpeedFactor(1);
         GameStateManager.Instance.SetSpeedFactorDuration(0);
-        GameStateManager.Instance.SetLevel(GameStateManager.Instance.Level + 1);
 
         this.ball.SetLevelSpeed(GameStateManager.Instance.Level);
         this.paddle.CaptureBall();

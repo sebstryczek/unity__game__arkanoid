@@ -2652,8 +2652,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b13b90722fb0d4742a48db060ff80d7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rows: 2
-  columns: 4
+  rows: 6
+  columns: 10
   border: 0.25
   prefabBorder: {fileID: 1234758046167822, guid: feb9e636b18916b4ab267db439260cf9,
     type: 2}
