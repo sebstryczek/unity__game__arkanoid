@@ -42,4 +42,9 @@ public class AppFlowManager : Singleton<AppFlowManager>
         GameStateManager.Instance.LoadFromFile();
         SceneManager.LoadScene("Game");
     }
+
+    public void ExitGame()
+    {
+        Application.Quit();
+    }
 }
