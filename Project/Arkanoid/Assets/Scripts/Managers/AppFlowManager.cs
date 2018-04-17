@@ -3,23 +3,16 @@ using UnityEngine.SceneManagement;
 
 public class AppFlowManager : Singleton<AppFlowManager>
 {
-    public bool IsPaused { get; private set; }
-
-    private void Awake()
-    {
-        this.IsPaused = false;
-    }
+    public bool IsPaused { get { return Time.timeScale == 0; } }
 
     public void PauseGame()
     {
         Time.timeScale = 0;
-        this.IsPaused = true;
     }
 
     public void ContinueGame()
     {
         Time.timeScale = 1;
-        this.IsPaused = false;
     }
 
     public void GoToMenu()
@@ -29,7 +22,7 @@ public class AppFlowManager : Singleton<AppFlowManager>
 
     public void GoToMenuAndSave()
     {
-        GameStateManager.Instance.Save();
+        GameStateManager.Instance.SaveToFile();
         SceneManager.LoadScene("Menu");
     }
 
@@ -46,7 +39,7 @@ public class AppFlowManager : Singleton<AppFlowManager>
 
     public void GoToSavedGame()
     {
-        GameStateManager.Instance.Load();
+        GameStateManager.Instance.LoadFromFile();
         SceneManager.LoadScene("Game");
     }
 }

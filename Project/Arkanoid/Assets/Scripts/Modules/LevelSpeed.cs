@@ -28,6 +28,14 @@ public class LevelSpeed : MonoBehaviour
         }
     }
 
+    public void ResetSpeed()
+    {
+        this.ballMovement.SetSpeedFactor(1);
+        this.paddleMovement.SetSpeedFactor(1);
+        this.duration = 0;
+        this.isActive = false;
+    }
+
     public void SetSpeed(float factor, float duration)
     {
         if (factor != 1 && duration > 0)

@@ -3,24 +3,30 @@
 public class Paddle : MonoBehaviour
 {
     [SerializeField] private BallMovement ball;
-    private bool isBallReleased = false;
+    public bool isBallReleased = false;
     private Transform selfTransform;
 
     private void Awake()
     {
         this.selfTransform = this.transform;
     }
-    
-    private void Start()
-    {
-        this.CaptureBall();
-    }
 
     private void Update()
     {
         if (AppFlowManager.Instance.IsPaused) return;
 
+        GameStateManager.Instance.SetIsBallReleased(this.isBallReleased);
+
         if (!this.isBallReleased && Input.GetMouseButtonUp(0))
+        {
+            this.ReleaseBall();
+        }
+    }
+
+    public void LoadState()
+    {
+        this.selfTransform.position = GameStateManager.Instance.PaddlePosition;
+        if (GameStateManager.Instance.IsBallReleased)
         {
             this.ReleaseBall();
         }

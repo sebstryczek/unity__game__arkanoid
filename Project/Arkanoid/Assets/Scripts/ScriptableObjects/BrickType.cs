@@ -14,11 +14,11 @@ public class BrickType : ScriptableObject
     [SerializeField] private int points = 1;
     public int Points { get { return this.points; } }
 
-    [SerializeField] private float speed = 1;
-    public float Speed { get { return this.speed; } }
+    [SerializeField] private float speedFactor = 1;
+    public float SpeedFactor { get { return this.speedFactor; } }
 
-    [SerializeField] private float speedDuration = 0;
-    public float SpeedDuration { get { return this.speedDuration; } }
+    [SerializeField] private float speedFactorDuration = 0;
+    public float SpeedFactorDuration { get { return this.speedFactorDuration; } }
     
     [SerializeField] private int bonusLives = 0;
     public int BonusLives { get { return this.bonusLives; } }

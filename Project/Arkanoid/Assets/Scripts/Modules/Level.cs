@@ -1,52 +1,25 @@
-﻿using System.IO;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
 
 public class Level : MonoBehaviour
 {
-    [SerializeField] private UnityEvent onWin;
-    [SerializeField] private UnityEvent onLose;
-
-    private Area area = new Area(1, 4, 0.25f);
-    private LevelBorders levelBorders;
+    [SerializeField] BallMovement ball;
+    [SerializeField] Paddle paddle;
     private LevelBricks levelBricks;
     private LevelSpeed levelSpeed;
+    private LevelStatus levelStatus;
     private LevelUI levelUI;
     
-
     private void Awake()
     {
-        this.levelBorders = GetComponent<LevelBorders>();
         this.levelBricks = GetComponent<LevelBricks>();
         this.levelSpeed = GetComponent<LevelSpeed>();
+        this.levelStatus = GetComponent<LevelStatus>();
         this.levelUI = GetComponent<LevelUI>();
-    }
 
-    private void Start()
-    {
-        // In build, state is created in menu
-        if (Application.isEditor && !GameStateManager.Instance.IsStateExist)
-        {
-            GameStateManager.Instance.Create();
-        }
-        
         GameStateManager.Instance.onSetLives += this.levelUI.SetLivesUI;
         GameStateManager.Instance.onSetScore += this.levelUI.SetScoreUI;
-
-        if (GameStateManager.Instance.State.fields == null)
-        {
-            int[][] fields = this.GetRandomFieldsSet();
-            GameStateManager.Instance.SetFields(fields);
-            GameStateManager.Instance.SetLives(3);
-            GameStateManager.Instance.SetScore(0);
-            GameStateManager.Instance.SetTimeFactor(1);
-        }
-
-
-        this.levelBorders.CreateBorder(this.area);
-        this.levelBricks.CreateBricks(GameStateManager.Instance.State, this.area, this.OnBrickHitted);
     }
-
 
     private void OnDestroy()
     {
@@ -54,63 +27,79 @@ public class Level : MonoBehaviour
         GameStateManager.Instance.onSetScore -= this.levelUI.SetScoreUI;
     }
 
+    private void Start()
+    {
+        /* In build, state is created in menu */
+        if (Application.isEditor && !GameStateManager.Instance.IsStateExist)
+        {
+            GameStateManager.Instance.Create();
+        }
+        /* *** */
+
+        if (GameStateManager.Instance.Fields != null)
+        {
+            this.ContinueLevel();
+        }
+        else
+        {
+            this.CreateFirstLevel();
+        }
+    }
+
+    private void ContinueLevel()
+    {
+        this.levelUI.SetLivesUI(GameStateManager.Instance.Lives);
+        this.levelUI.SetScoreUI(GameStateManager.Instance.Score);
+
+        this.paddle.LoadState();
+        this.ball.LoadState();
+        this.ball.SetLevelSpeed(GameStateManager.Instance.Level);
+        this.levelSpeed.SetSpeed(GameStateManager.Instance.SpeedFactor, GameStateManager.Instance.SpeedFactorDuration);
+        this.levelBricks.CreateBricks(GameStateManager.Instance.Fields, this.OnBrickHitted);
+    }
+
+    private void CreateFirstLevel()
+    {
+        int[][] fields = this.levelBricks.GetRandomFieldsSet();
+        GameStateManager.Instance.SetFields(fields);
+        GameStateManager.Instance.SetLevel(1);
+        GameStateManager.Instance.SetLives(3);
+        GameStateManager.Instance.SetScore(0);
+        GameStateManager.Instance.SetSpeedFactor(1);
+        GameStateManager.Instance.SetSpeedFactorDuration(0);
+
+        this.ball.SetLevelSpeed(GameStateManager.Instance.Level);
+        this.paddle.CaptureBall();
+        this.levelSpeed.SetSpeed(GameStateManager.Instance.SpeedFactor, GameStateManager.Instance.SpeedFactorDuration);
+        this.levelBricks.CreateBricks(GameStateManager.Instance.Fields, this.OnBrickHitted);
+    }
+
+    private void CreateNextLevel()
+    {
+        int[][] fields = this.levelBricks.GetRandomFieldsSet();
+        GameStateManager.Instance.SetFields(fields);
+        GameStateManager.Instance.SetSpeedFactor(1);
+        GameStateManager.Instance.SetSpeedFactorDuration(0);
+        GameStateManager.Instance.SetLevel(GameStateManager.Instance.Level + 1);
+
+        this.ball.SetLevelSpeed(GameStateManager.Instance.Level);
+        this.paddle.CaptureBall();
+        this.levelSpeed.ResetSpeed();
+        this.levelBricks.CreateBricks(GameStateManager.Instance.Fields, this.OnBrickHitted);
+    }
+
     private void OnBrickHitted(Brick brick)
     {
-        GameStateManager.Instance.State.fields[brick.Row][brick.Column] = -1;
-        GameStateManager.Instance.SetScore(GameStateManager.Instance.State.score + brick.Type.Points);
-        GameStateManager.Instance.SetLives(GameStateManager.Instance.State.lives + brick.Type.BonusLives);
+        GameStateManager.Instance.Fields[brick.Row][brick.Column] = -1;
+        GameStateManager.Instance.SetScore(GameStateManager.Instance.Score + brick.Type.Points);
+        GameStateManager.Instance.SetLives(GameStateManager.Instance.Lives + brick.Type.BonusLives);
+        GameStateManager.Instance.SetSpeedFactor(brick.Type.SpeedFactor);
+        GameStateManager.Instance.SetSpeedFactorDuration(brick.Type.SpeedFactorDuration);
+        this.levelSpeed.SetSpeed(brick.Type.SpeedFactor, brick.Type.SpeedFactorDuration);
 
-        this.levelSpeed.SetSpeed(brick.Type.Speed, brick.Type.SpeedDuration);
-
-        int[][] fields = GameStateManager.Instance.State.fields;
-        for (int i = 0; i < fields.Length; i++)
+        if (this.levelStatus.IsLevelComplete())
         {
-            for (int j = 0; j < fields[i].Length; j++)
-            {
-                if (fields[i][j] > -1)
-                {
-                    return;
-                }
-            }
+            this.CreateNextLevel();
         }
-
-        this.LevelComplete();
-    }
-
-    private void LevelComplete()
-    {
-        int[][] fields = this.GetRandomFieldsSet();
-        GameStateManager.Instance.SetFields(fields);
-        this.levelBricks.CreateBricks(GameStateManager.Instance.State, this.area, this.OnBrickHitted);
-        
-        this.onWin.Invoke();
-    }
-
-    public void Died()
-    {
-        GameStateManager.Instance.SetLives(GameStateManager.Instance.State.lives - 1);
-    
-        if (GameStateManager.Instance.State.lives < 0)
-        {
-            this.onLose.Invoke();
-            return;
-        }
-    }
-
-    private int[][] GetRandomFieldsSet()
-    {
-        int[][] fields = new int[this.area.Rows][];
-        for (int i = 0; i < fields.Length; i++)
-        {
-            int columnsCount = Random.Range(1, this.area.Columns);
-            fields[i] = new int[columnsCount];
-            for (int j = 0; j < fields[i].Length; j++)
-            {
-                BrickType brickType = this.levelBricks.GetRandomBrickType();
-                fields[i][j] = brickType.Id;
-            }
-        }
-
-        return fields;
     }
 }

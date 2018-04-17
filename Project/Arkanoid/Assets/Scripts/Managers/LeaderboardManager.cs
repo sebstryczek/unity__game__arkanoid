@@ -1,46 +1,41 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class LeaderboardManagement : MonoBehaviour
+public class LeaderboardManager : StorageManager<LeaderboardManager, Leaderboard>
 {
-    private string fileName = "leaderboard.dat";
-    private Storage<Leaderboard> storage;
-    public Leaderboard State { get { return this.storage.State; } }
-    public bool IsStateExist { get { return this.State != null; } }
-
-    private void Awake()
+    public Dictionary<string, int> Results { get { return this.storage.State.results; } }
+    
+    protected override void Awake()
     {
-        this.storage = new Storage<Leaderboard>(fileName);
-    }
+        this.fileName = "leaderboard.dat";
+        base.Awake();
 
-    private void Start()
-    {
-        if (!this.storage.HasSave)
+        if (!this.storage.IsFileExist)
         {
             this.storage.Create();
         }
         else
         {
-            this.storage.Load();
+            this.storage.LoadFromFile();
         }
 
-        if (this.State.results == null)
+        if (this.storage.State.results == null)
         {
-            this.State.results = new Dictionary<string, int>();
+            this.storage.State.results = new Dictionary<string, int>();
         }
     }
 
-    private void AddItem(string name, int score)
+    public void AddItem(string name, int score)
     {
-        if (this.State.results.ContainsKey(name))
+        if (this.storage.State.results.ContainsKey(name))
         {
-            this.State.results[name] = score;
+            this.storage.State.results[name] = score;
         }
         else
         {
-            this.State.results.Add(name, score);
+            this.storage.State.results.Add(name, score);
         }
 
-        this.storage.Save();
+        this.storage.SaveToFile();
     }
 }

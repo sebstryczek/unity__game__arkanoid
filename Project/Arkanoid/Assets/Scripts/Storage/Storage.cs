@@ -11,14 +11,22 @@ public class Storage<T> where T : new()
         this.filePath = filePath;
     }
     
-    public bool HasSave { get { return File.Exists(this.filePath); } }
+    public bool IsFileExist { get { return File.Exists(this.filePath); } }
 
     public void Create()
     {
         this.State = new T();
     }
 
-    public void Load()
+    public void RemoveFile()
+    {
+        if (this.IsFileExist)
+        {
+            File.Delete(this.filePath);
+        }
+    }
+
+    public void LoadFromFile()
     {
         BinaryFormatter bf = new BinaryFormatter();
         FileStream stream = new FileStream(this.filePath, FileMode.Open);
@@ -26,7 +34,7 @@ public class Storage<T> where T : new()
         stream.Close();
     }
 
-    public void Save()
+    public void SaveToFile()
     {
         BinaryFormatter bf = new BinaryFormatter();
         FileStream stream = new FileStream(this.filePath, FileMode.Create);
