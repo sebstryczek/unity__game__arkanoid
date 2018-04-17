@@ -10,7 +10,7 @@ public class LeaderboardUI : MonoBehaviour
     private void Start()
     {
         Dictionary<string, int> results = LeaderboardManager.Instance.Results;
-        results = results.OrderBy(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
+        results = results.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
         int index = 1;
         foreach (KeyValuePair<string, int> item in results)
         {
