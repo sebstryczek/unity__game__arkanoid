@@ -68,8 +68,8 @@ public class Level : MonoBehaviour
         GameStateManager.Instance.SetSpeedFactor(1);
         GameStateManager.Instance.SetSpeedFactorDuration(0);
 
-        this.ball.SetLevelSpeed(GameStateManager.Instance.Level);
         this.paddle.CaptureBall();
+        this.ball.SetLevelSpeed(GameStateManager.Instance.Level);
         this.levelSpeed.SetSpeed(GameStateManager.Instance.SpeedFactor, GameStateManager.Instance.SpeedFactorDuration);
         this.levelBricks.CreateBricks(GameStateManager.Instance.Fields, this.OnBrickHitted);
     }
@@ -82,8 +82,8 @@ public class Level : MonoBehaviour
         GameStateManager.Instance.SetSpeedFactor(1);
         GameStateManager.Instance.SetSpeedFactorDuration(0);
 
-        this.ball.SetLevelSpeed(GameStateManager.Instance.Level);
         this.paddle.CaptureBall();
+        this.ball.SetLevelSpeed(GameStateManager.Instance.Level);
         this.levelSpeed.ResetSpeed();
         this.levelBricks.CreateBricks(GameStateManager.Instance.Fields, this.OnBrickHitted);
     }

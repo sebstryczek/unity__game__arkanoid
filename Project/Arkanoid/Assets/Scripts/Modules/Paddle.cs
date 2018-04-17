@@ -15,8 +15,6 @@ public class Paddle : MonoBehaviour
     {
         if (AppFlowManager.Instance.IsPaused) return;
 
-        GameStateManager.Instance.SetIsBallReleased(this.isBallReleased);
-
         if (!this.isBallReleased && Input.GetMouseButtonUp(0))
         {
             this.ReleaseBall();
@@ -38,6 +36,7 @@ public class Paddle : MonoBehaviour
         this.ball.transform.SetParent(this.selfTransform);
         this.ball.transform.localPosition = new Vector2(0, 1.1f);
         this.isBallReleased = false;
+        GameStateManager.Instance.SetIsBallReleased(this.isBallReleased);
     }
 
     public void ReleaseBall()
@@ -45,5 +44,6 @@ public class Paddle : MonoBehaviour
         this.ball.transform.SetParent(null);
         this.ball.Push();
         this.isBallReleased = true;
+        GameStateManager.Instance.SetIsBallReleased(this.isBallReleased);
     }
 }
